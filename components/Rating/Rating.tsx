@@ -2,9 +2,9 @@ import { RatingProps } from './Rating.props';
 import styles from './Rating.module.css';
 import cn from 'classnames';
 import StarIcon from './star.svg';
-import { useEffect, useState, KeyboardEvent } from 'react';
+import { useEffect, useState, KeyboardEvent, forwardRef, ForwardedRef } from 'react';
 
-export const Rating = ({ isEditable = false, rating, setRating, ...props }: RatingProps): JSX.Element => {
+export const Rating = forwardRef(({ isEditable = false, error, rating, setRating, ...props }: RatingProps, ref: ForwardedRef<HTMLDivElement>): JSX.Element => {
 	const [ratingArray, setRatingArray] = useState<JSX.Element[]>(new Array(5).fill(<></>));
 
 	useEffect(() => {
@@ -19,21 +19,23 @@ export const Rating = ({ isEditable = false, rating, setRating, ...props }: Rati
 						[styles.filled]: i < currentRating,
 						[styles.editable]: isEditable
 					})}
-					onMouseEnter={() => changeDisplay(i + 1)}
-					onMouseLeave={() => changeDisplay(rating)}
+					onMouseEnter={() => changeDispay(i + 1)}
+					onMouseLeave={() => changeDispay(rating)}
 					onClick={() => onClick(i + 1)}
 				>
 					<StarIcon
+
 						tabIndex={isEditable ? 0 : -1}
-						onKeyDown={(e: KeyboardEvent<SVGAElement>) => isEditable && handleSpace(i + 1, e)}
+						onKeyDown={(e: KeyboardEvent<SVGElement>) => isEditable && handleSpace(i + 1, e)}
 					/>
 				</span>
-			)
+
+			);
 		});
 		setRatingArray(updatedArray);
-	}
+	};
 
-	const changeDisplay = (i: number) => {
+	const changeDispay = (i: number) => {
 		if (!isEditable) {
 			return;
 		}
@@ -47,16 +49,19 @@ export const Rating = ({ isEditable = false, rating, setRating, ...props }: Rati
 		setRating(i);
 	};
 
-	const handleSpace = (i: number, e: KeyboardEvent<SVGAElement>) => {
+	const handleSpace = (i: number, e: KeyboardEvent<SVGElement>) => {
 		if (e.code != 'Space' || !setRating) {
 			return;
 		}
 		setRating(i);
-	}
+	};
 
 	return (
-		<div {...props}>
+		<div {...props} ref={ref} className={cn(styles.ratingWrapper, {
+			[styles.error]: error
+		})}>
 			{ratingArray.map((r, i) => (<span key={i}>{r}</span>))}
+			{error && <span className={styles.errorMessage}>{error.message}</span>}
 		</div>
-	)
-}
+	);
+});
