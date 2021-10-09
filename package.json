@@ -5,6 +5,7 @@
 	"scripts": {
 		"prepare": "husky install",
 		"dev": "next dev",
+		"export": "next export",
 		"debug": "cross-env NODE_OPTIONS='--inspect' next dev",
 		"build": "next build",
 		"start": "next start",
@@ -12,6 +13,7 @@
 	},
 	"dependencies": {
 		"axios": "^0.21.4",
+		"classnames": "^2.3.1",
 		"date-fns": "^2.23.0",
 		"framer-motion": "^4.1.11",
 		"next": "11.1.2",

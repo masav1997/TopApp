@@ -4,6 +4,7 @@ import cn from 'classnames';
 import StarIcon from './star.svg';
 import { useEffect, useState, KeyboardEvent, forwardRef, ForwardedRef, useRef } from 'react';
 
+// eslint-disable-next-line react/display-name
 export const Rating = forwardRef(({ isEditable = false, error, rating, setRating, tabIndex, ...props }: RatingProps, ref: ForwardedRef<HTMLDivElement>): JSX.Element => {
 	const [ratingArray, setRatingArray] = useState<JSX.Element[]>(new Array(5).fill(<></>));
 	const ratingArrayRef = useRef<(HTMLSpanElement | null)[]>([]);
@@ -28,6 +29,7 @@ export const Rating = forwardRef(({ isEditable = false, error, rating, setRating
 	const constructRating = (currentRating: number) => {
 		const updatedArray = ratingArray.map((r: JSX.Element, i: number) => {
 			return (
+				// eslint-disable-next-line react/jsx-key
 				<span
 					className={cn(styles.star, {
 						[styles.filled]: i < currentRating,
